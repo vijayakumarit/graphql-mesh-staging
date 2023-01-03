@@ -1,0 +1,11 @@
+sources: 
+  - name: Github
+    handler:
+      graphql:
+        endpoint: https://api.github.com/graphql
+        schemaHeaders:
+          Authorization: bearer {env.GH_ACCESS_TOKEN}
+        operationHeaders:
+          Authorization: bearer {env.GH_ACCESS_TOKEN}
+
+#additionalEnvelopPlugins: './envelopPlugins.ts'

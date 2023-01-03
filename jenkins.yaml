@@ -1,0 +1,35 @@
+
+---
+slack_channel: '#graphql-federated-gateway-mesh'
+unit_test_slack_channel: '#graphql-federated-gateway-mesh'
+approval_slack_channel: '#graphql-federated-gateway-mesh'
+ignore_failed_tests: true
+run_integration_tests: false
+require_migration_approval: false
+require_cleanup_approval: false
+docker_image: gcr.io/zoominfo-container-registry/zoom-node:16-debian
+npm_install: 'npm ci --ignore-scripts' 
+#npm_build: 'npm run build:staging' 
+run_unit_tests: false
+npm_unit_tests: 'npm run test:cov'
+ignore_failed_unit_tests: false
+ignore_sonar_qualitygate_failures: false
+send_sonar_qualitygate_slack_message: false
+app_yaml: './yaml/default.yaml'
+stop_after_unit_tests: true
+
+branches:
+  master:
+    deploy_project: 'dozi-prd-graphql-mesh-1'
+    app_yaml: './yaml/production.yaml' 
+    require_migration_approval: true
+    require_cleanup_approval: true
+    ignore_failed_tests: false
+    stop_after_unit_tests: false
+
+  staging:
+    deploy_project: 'dozi-stg-graphql-mesh-1' 
+    app_yaml: './yaml/staging.yaml'
+    ignore_failed_tests: false
+    ignore_sonar_qualitygate_failures: false
+    stop_after_unit_tests: false

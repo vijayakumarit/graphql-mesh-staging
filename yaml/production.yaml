@@ -1,0 +1,49 @@
+---
+service: unified-facade-graphql-mesh
+env: flex
+runtime: nodejs
+
+readiness_check:
+  path: '/readiness'
+  check_interval_sec: 8
+  timeout_sec: 3
+  failure_threshold: 10
+  success_threshold: 2
+  app_start_timeout_sec: 300
+
+liveness_check:
+  path: '/healthcheck'
+  check_interval_sec: 5
+  timeout_sec: 3
+  failure_threshold: 8
+  success_threshold: 2
+  initial_delay_sec: 300
+
+resources:
+  cpu: 2
+  memory_gb: 6
+
+skip_files:
+  - ^node_modules$
+  - ^(.*/)?(.*\staging.yaml)
+
+env_variables:
+  NODE_ENV: 'stg'
+  NODE_OPTIONS: '--require dotenv/config'
+  NODE_SETTINGS: '--max-semi-space-size=256'
+  UV_THREADPOOL_SIZE: 128
+  ACCESS_LOG: 'true'
+
+  ## @zoominfo/node-logger
+  ZI_LOG_FORMAT: 'json'
+  ZI_TRACER_LOG_INJECTION: 'true'
+
+automatic_scaling:
+  min_num_instances: 2
+  max_num_instances: 3
+  cool_down_period_sec: 120 # default value
+  
+network:
+  name: default
+  subnetwork_name: default
+  instance_tag: allow-ssh
